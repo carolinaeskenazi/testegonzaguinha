@@ -34,7 +34,7 @@ const StatisticsCharts: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/alunos")
+    fetch(`${import.meta.env.VITE_API_URL}/api/alunos`)
       .then((res) => res.json())
       .then((data: Aluno[]) => {
         setAlunos(data);
@@ -96,10 +96,24 @@ const StatisticsCharts: React.FC = () => {
     if (conds.includes("psychological")) turmaStats[turma].psychological++;
   });
 
-  const barData = Object.entries(turmaStats).map(([turma, stats]) => ({
-    turma,
-    ...stats,
-  }));
+  const parseTurma = (nome: string): [number, string] => {
+    const match = nome.match(/^(\d{1,2})º Ano ([A-Z])$/);
+    if (!match || match.length < 3) return [99, "Z"];
+    return [parseInt(match[1]), match[2]];
+  };
+  
+  const barData = Object.entries(turmaStats)
+    .map(([turma, stats]) => ({
+      turma,
+      ...stats,
+    }))
+    .sort((a, b) => {
+      const [numA, letraA] = parseTurma(a.turma);
+      const [numB, letraB] = parseTurma(b.turma);
+      if (numA !== numB) return numA - numB;
+      return letraA.localeCompare(letraB);
+    });
+  
 
   // --- Dados para gráfico de linha ---
   const registroPorMes: Record<string, number> = {};
@@ -160,7 +174,7 @@ const StatisticsCharts: React.FC = () => {
             <BarChart width={600} height={300} data={barData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="turma" />
-              <YAxis />
+              <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />
               <Bar dataKey="disability" stackId="a" fill="#0088FE" name="Deficiência" />
@@ -183,7 +197,7 @@ const StatisticsCharts: React.FC = () => {
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" />
-              <YAxis />
+              <YAxis allowDecimals={false} />
               <Tooltip />
               <Legend />
               <Line type="monotone" dataKey="count" stroke="#8884d8" name="Novos Registros" />

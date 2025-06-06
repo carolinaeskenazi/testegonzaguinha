@@ -130,7 +130,7 @@ const AddStudent = () => {
   ];
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/turmas")
+    fetch(`${import.meta.env.VITE_API_URL}/api/turmas`)
       .then(res => res.json())
       .then(data => setTurmas(data))
       .catch(() => setTurmas([]));
@@ -138,7 +138,7 @@ const AddStudent = () => {
 
   const onSubmit = async (data: StudentFormData) => {
     try {
-      const response = await fetch("http://localhost:5001/api/alunos", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/alunos`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

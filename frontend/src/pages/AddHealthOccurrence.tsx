@@ -47,7 +47,7 @@ const AddHealthOccurrence = () => {
         console.error("ID do aluno não encontrado na URL.");
         return;
       }
-      const response = await axios.post(`http://127.0.0.1:5001/api/alunos/${alunoId}/ocorrencias`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/alunos/${alunoId}/ocorrencias`, {
         titulo: data.title,
         descricao: data.description,
         data: data.date,

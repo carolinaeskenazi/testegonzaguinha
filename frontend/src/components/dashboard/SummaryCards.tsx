@@ -36,7 +36,7 @@ export const SummaryCards: React.FC = () => {
   useEffect(() => {
     async function fetchSummary() {
       try {
-        const res = await fetch("/api/alunos/summary");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/alunos/summary`);
         if (!res.ok) {
           throw new Error(`Erro ao buscar resumo: ${res.status}`);
         }

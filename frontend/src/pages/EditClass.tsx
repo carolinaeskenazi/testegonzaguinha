@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -95,21 +94,10 @@ const EditClass = () => {
   });
 
   useEffect(() => {
-    // Simular busca dos dados da turma
-    const loadClassData = async () => {
-      try {
-        // Em uma aplicação real, faria fetch("/api/classes/" + id)
-        await new Promise(resolve => setTimeout(resolve, 500));
-        form.reset(mockClassData);
-      } catch (error) {
-        toast.error("Erro ao carregar dados da turma");
-        navigate('/classes');
-      }
-    };
-
-    if (id) {
-      loadClassData();
-    }
+    // Exemplo real:
+    // const res = await fetch(`${import.meta.env.VITE_API_URL}/api/classes/` + id)
+    //   .then(res => res.json());
+    // form.reset(res);
   }, [id, form, navigate]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

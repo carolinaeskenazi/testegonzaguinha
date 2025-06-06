@@ -102,8 +102,8 @@ const EditStudent = () => {
   useEffect(() => {
     const fetchStudent = async () => {
       try {
-        const res = await axios.get(`http://localhost:5001/api/alunos/${id}`);
-        form.reset(res.data); // popula o formulário com dados reais
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/alunos/${id}`);
+        form.reset(res.data);
       } catch (err) {
         toast.error("Erro ao carregar dados do aluno.");
         navigate("/students");
@@ -151,7 +151,7 @@ const EditStudent = () => {
 
   const onSubmit = async (data: StudentFormData) => {
     try {
-      await axios.put(`http://localhost:5001/api/alunos/${id}`, data);
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/alunos/${id}`, data);
       toast.success(`Informações de ${data.name} atualizadas com sucesso!`);
       navigate("/students");
     } catch (err) {

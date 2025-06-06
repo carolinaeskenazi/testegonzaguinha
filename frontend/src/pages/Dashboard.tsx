@@ -16,12 +16,49 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, Settings, Bell, Users, Home, Info } from "lucide-react";
+import { useEffect } from "react";
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedClass, setSelectedClass] = useState("all");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [turmas, setTurmas] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchTurmas = async () => {
+      try {
+        const res = await fetch("http://localhost:5001/api/turmas");
+        const data = await res.json();
+        const nomes = Array.isArray(data)
+          ? data
+              .map((turma: any) => turma.nome)
+              .sort((a: string, b: string) => {
+                const parseTurma = (nome: string): [number, string] => {
+                  const match = nome.match(/^(\d+)º Ano ([A-Z])$/);
+                  if (!match || match.length < 3) return [0, 'Z']; // 'Z' joga turmas inválidas pro fim
+                  return [parseInt(match[1]), match[2]];
+                };
+                
+
+                const [numA, letraA] = parseTurma(a);
+                const [numB, letraB] = parseTurma(b);
+
+                if (numA !== numB) return numA - numB;
+                return letraA.localeCompare(letraB);
+              })
+          : [];
+
+        setTurmas(nomes);
+
+      } catch (err) {
+        console.error("Erro ao buscar turmas:", err);
+      }
+    };
+  
+    fetchTurmas();
+  }, []);
 
   const handleFilterToggle = (filter: string) => {
     setActiveFilters(prev => 
@@ -31,12 +68,7 @@ const Dashboard = () => {
     );
   };
 
-  const classes = [
-    "6º Ano A", "6º Ano B", "6º Ano C",
-    "7º Ano A", "7º Ano B", "7º Ano C", 
-    "8º Ano A", "8º Ano B", "8º Ano C",
-    "9º Ano A", "9º Ano B", "9º Ano C"
-  ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -112,9 +144,9 @@ const Dashboard = () => {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">Todas as turmas</SelectItem>
-                    {classes.map((className) => (
-                      <SelectItem key={className} value={className}>
-                        {className}
+                    {turmas.map((nomeTurma) => (
+                      <SelectItem key={nomeTurma} value={nomeTurma}>
+                        {nomeTurma}
                       </SelectItem>
                     ))}
                   </SelectContent>

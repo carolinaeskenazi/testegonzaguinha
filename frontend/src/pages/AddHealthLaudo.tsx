@@ -106,7 +106,7 @@ const handleDragLeave = () => setDragOver(false);
     formData.append("file", data.file); 
 
     const response = await axios.post(
-      `http://127.0.0.1:5001/api/alunos/${alunoId}/laudos`,
+      `${import.meta.env.VITE_API_URL}/api/alunos/${alunoId}/laudos`,
       formData,
       {
         headers: {

@@ -13,7 +13,7 @@ const ViewOccurrence = () => {
   const [ocorrencia, setOcorrencia] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:5001/api/ocorrencias/${occurrenceId}`)
+    axios.get(`${import.meta.env.VITE_API_URL}/api/ocorrencias/${occurrenceId}`)
       .then(res => setOcorrencia(res.data))
       .catch(err => {
         console.error("Erro ao carregar ocorrência:", err);
