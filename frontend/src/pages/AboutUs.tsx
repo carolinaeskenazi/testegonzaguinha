@@ -10,7 +10,7 @@ const AboutUs = () => {
 
   const teamMembers = [
     { name: "Gabriel Pradyumna", photo: "/Prady.jpg", linkedin: "https://www.linkedin.com/in/gabriel-pradyumna" },
-    { name: "Thaís Rocha",       photo: "/Thais.jpg", linkedin: "https://www.linkedin.com/in/thais-rocha" },
+    { name: "Thaís Rocha",       photo: "/Thais.jpg", linkedin: "https://www.linkedin.com/in/thais-silveira-4488852ba?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" },
     { name: "Pedro Vargas",      photo: "/Pedro.jpg", linkedin: "https://www.linkedin.com/in/pedro-henrique-vargas-sepulveda-a139b62b7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" },
     { name: "Enzo Perego",       photo: "/Enzo.jpg",  linkedin: "https://www.linkedin.com/in/enzo-rios-perego-426b50304/" },
     { name: "Fernando Boni",     photo: "/Fernando.jpg", linkedin: "https://br.linkedin.com/in/fernando-boni-019587268" },
