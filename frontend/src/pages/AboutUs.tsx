@@ -9,15 +9,16 @@ const AboutUs = () => {
   const navigate = useNavigate();
 
   const teamMembers = [
-    { name: "Gabriel Pradyumna",   photo: "/Prady.jpg"    },
-    { name: "Thaís Rocha",         photo: "/Thais.jpg"    },
-    { name: "Pedro Vargas",        photo: "/Pedro.jpg"    },
-    { name: "Enzo Perego",         photo: "/Enzo.jpg"     },
-    { name: "Fernando Boni",       photo: "/Fernando.jpg" },
-    { name: "Carolina Eskenazi",   photo: "/Carol.jpg"    },
-    { name: "Gabriel Saraiva",     photo: "/Gabriel.jpg"  },
-    { name: "Yaz Nascimento",      photo: "/Yaz.jpg"      },
+    { name: "Gabriel Pradyumna", photo: "/Prady.jpg", linkedin: "https://www.linkedin.com/in/gabriel-pradyumna" },
+    { name: "Thaís Rocha",       photo: "/Thais.jpg", linkedin: "https://www.linkedin.com/in/thais-rocha" },
+    { name: "Pedro Vargas",      photo: "/Pedro.jpg", linkedin: "https://www.linkedin.com/in/pedro-henrique-vargas-sepulveda-a139b62b7?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app" },
+    { name: "Enzo Perego",       photo: "/Enzo.jpg",  linkedin: "https://www.linkedin.com/in/enzo-rios-perego-426b50304/" },
+    { name: "Fernando Boni",     photo: "/Fernando.jpg", linkedin: "https://br.linkedin.com/in/fernando-boni-019587268" },
+    { name: "Carolina Eskenazi", photo: "/Carol.jpg",    linkedin: "https://www.linkedin.com/in/carolina-eskenazi-269446302?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" },
+    { name: "Gabriel Saraiva",   photo: "/Gabriel.jpg",  linkedin: "https://www.linkedin.com/in/gabriel-saraiva" },
+    { name: "Yaz Nascimento",    photo: "/Yaz.jpg",      linkedin: "https://www.linkedin.com/in/yaz-nascimento" },
   ];
+  
 
   // Índice do primeiro membro a ser exibido no carrossel
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -84,17 +85,22 @@ const AboutUs = () => {
                   className="group flex flex-col items-center transform transition duration-300 hover:scale-105"
                 >
                   <div className="relative">
-                    <Avatar className="w-32 h-32 ring-4 ring-white shadow-lg">
-                      <AvatarImage
-                        src={member.photo}
-                        alt={member.name}
-                        className="object-cover"
-                      />
+                  <a
+                    href={member.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative group"
+                  >
+                    <Avatar className="w-32 h-32 ring-4 ring-white shadow-lg hover:ring-indigo-500 transition">
+                      <AvatarImage src={member.photo} alt={member.name} className="object-cover" />
                       <AvatarFallback className="bg-indigo-100 text-indigo-600">
                         <User className="w-12 h-12" />
                       </AvatarFallback>
                     </Avatar>
+
                     <div className="absolute inset-0 rounded-full bg-gradient-to-br from-transparent to-indigo-200 opacity-0 transition-opacity group-hover:opacity-20" />
+                  </a>
+
                   </div>
                   <p className="mt-3 text-base text-gray-700 text-center font-medium">
                     {member.name}

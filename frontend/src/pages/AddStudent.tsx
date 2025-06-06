@@ -132,9 +132,27 @@ const AddStudent = () => {
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/api/turmas`)
       .then(res => res.json())
-      .then(data => setTurmas(data))
+      .then(data => {
+
+        const parseTurma = (nome: string): [number, string] => {
+          const match = nome.match(/^(\d{1,2})º Ano ([A-Z])$/);
+          if (!match || match.length < 3) return [99, "Z"];
+          return [parseInt(match[1]), match[2]];
+        };
+  
+        const ordenadas = [...data].sort((a, b) => {
+          const [numA, letraA] = parseTurma(a.nome);
+          const [numB, letraB] = parseTurma(b.nome);
+          if (numA !== numB) return numA - numB;
+          return letraA.localeCompare(letraB);
+        });
+  
+        setTurmas(ordenadas);
+
+      })
       .catch(() => setTurmas([]));
   }, []);
+  
 
   const onSubmit = async (data: StudentFormData) => {
     try {

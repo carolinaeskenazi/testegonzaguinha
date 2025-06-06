@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -67,7 +67,7 @@ type StudentFormData = z.infer<typeof studentSchema>;
 const EditStudent = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [turmas, setTurmas] = useState<{ _id: string, nome: string }[]>([]);
 
   const form = useForm<StudentFormData>({
     resolver: zodResolver(studentSchema),
@@ -100,10 +100,35 @@ const EditStudent = () => {
   });
 
   useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/api/turmas`)
+      .then(res => res.json())
+      .then(data => {
+        // Ordenar as turmas do 1º ao 9º ano
+        const sortedTurmas = data.sort((a: { nome: string }, b: { nome: string }) => {
+          const getYear = (nome: string) => {
+            const match = nome.match(/(\d+)º/);
+            return match ? parseInt(match[1]) : 0;
+          };
+          const yearA = getYear(a.nome);
+          const yearB = getYear(b.nome);
+          if (yearA !== yearB) return yearA - yearB;
+          // Se for o mesmo ano, ordena por letra (A, B, C)
+          return a.nome.localeCompare(b.nome);
+        });
+        setTurmas(sortedTurmas);
+      })
+      .catch(() => setTurmas([]));
+  }, []);
+
+  useEffect(() => {
     const fetchStudent = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/alunos/${id}`);
-        form.reset(res.data);
+        const studentData = {
+          ...res.data,
+          class: res.data.class || res.data.turma
+        };
+        form.reset(studentData);
       } catch (err) {
         toast.error("Erro ao carregar dados do aluno.");
         navigate("/students");
@@ -151,7 +176,11 @@ const EditStudent = () => {
 
   const onSubmit = async (data: StudentFormData) => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_URL}/api/alunos/${id}`, data);
+      const studentData = {
+        ...data,
+        turma: data.class
+      };
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/alunos/${id}`, studentData);
       toast.success(`Informações de ${data.name} atualizadas com sucesso!`);
       navigate("/students");
     } catch (err) {
@@ -285,9 +314,9 @@ const EditStudent = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {classes.map((className) => (
-                              <SelectItem key={className} value={className}>
-                                {className}
+                            {turmas.map((turma) => (
+                              <SelectItem key={turma._id} value={turma.nome}>
+                                {turma.nome}
                               </SelectItem>
                             ))}
                           </SelectContent>

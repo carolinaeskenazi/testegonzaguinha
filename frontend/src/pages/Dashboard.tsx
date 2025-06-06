@@ -29,7 +29,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchTurmas = async () => {
       try {
-        const res = await fetch("http://localhost:5001/api/turmas");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/turmas`);
         const data = await res.json();
         const nomes = Array.isArray(data)
           ? data
@@ -41,7 +41,6 @@ const Dashboard = () => {
                   return [parseInt(match[1]), match[2]];
                 };
                 
-
                 const [numA, letraA] = parseTurma(a);
                 const [numB, letraB] = parseTurma(b);
 
